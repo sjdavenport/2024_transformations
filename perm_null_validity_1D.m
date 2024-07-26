@@ -1,9 +1,9 @@
 nsubj_vec = 10:10:100;
 
-fpr_orig = zeros(length(nsubj_vec), 3);
-fpr_apower = zeros(length(nsubj_vec), 3);
-fpr_asinh_clt = zeros(length(nsubj_vec), 3);
-fpr_asinh_exact = zeros(length(nsubj_vec), 3);
+% fpr_orig = zeros(length(nsubj_vec), 3);
+% fpr_apower = zeros(length(nsubj_vec), 3);
+% fpr_asinh_clt = zeros(length(nsubj_vec), 3);
+% fpr_asinh_exact = zeros(length(nsubj_vec), 3);
 saveloc = '/Users/sdavenport/Documents/Code/MATLAB/Papers/2024_transformations/nsubj_results/';
 % fpr_asinh_exact = 0;
 
@@ -12,8 +12,9 @@ alpha = 0.05;
 nboot = 1000;
 show_loader = 0;
 nvox = 1000;
-for K = 1:3
-    for J = 1:length(nsubj_vec)
+for K = 3:3
+    Jstart = 7;
+    for J = Jstart:length(nsubj_vec)
         nsubj = nsubj_vec(J);
         for I = 1:nsim
             I
@@ -44,7 +45,7 @@ for K = 1:3
             asinh_thresh_exact = perm_asinh( data, alpha, nboot, show_loader);
             fpr_asinh_exact(J,K) = fpr_asinh_exact(J,K) + (max(tstat_asinh) > asinh_thresh_exact);
 
-            save([saveloc, 'nvox_', num2str(nvox)], 'fpr_orig', 'fpr_apower', 'fpr_asinh_clt', 'fpr_asinh_exact')
+            save([saveloc, 'nvox_', num2str(nvox)], 'fpr_orig', 'fpr_apower', 'fpr_asinh_clt', 'fpr_asinh_exact', 'nsim', 'nboot')
         end
     end
 end
@@ -52,7 +53,12 @@ fpr_orig = fpr_orig/nsim
 fpr_apower = fpr_apower/nsim
 fpr_asinh_clt = fpr_asinh_clt/nsim
 fpr_asinh_exact = fpr_asinh_exact/nsim
-save([saveloc, 'nvox_', num2str(nvox)], 'fpr_orig', 'fpr_apower', 'fpr_asinh_clt', 'fpr_asinh_exact')
+save([saveloc, 'nvox_', num2str(nvox)], 'fpr_orig', 'fpr_apower', 'fpr_asinh_clt', 'fpr_asinh_exact', 'nsim', 'nboot')
+
+%%
+a = load('/Users/sdavenport/Documents/Code/MATLAB/Papers/2024_transformations/nsubj_results/nvox_1000_orig.mat');
+b = load('/Users/sdavenport/Documents/Code/MATLAB/Papers/2024_transformations/nsubj_results/nvox_1000.mat');
+
 
 %%
 fpr_asinh_exact = 0;
